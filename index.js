@@ -79,5 +79,5 @@ const matrixOff = () => axios.get(`${HDANYWHERE}/api/power/0`)
 const matrixSwitch = (output, input) => axios.get(`${HDANYWHERE}/api/control/switch/${output}/${input}`)
 
 
-
 run()
+setInterval(run, 1000 * 30)
