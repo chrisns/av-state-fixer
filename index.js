@@ -1,6 +1,5 @@
 const axios = require('axios').default
-const {HARMONY, HDANYWHERE} = process.env
-// const TiVoDiscovery = require('tivo-remote')
+const {HARMONY, NEO} = process.env
 
 const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
 .then(response => response.data.current_activity.slug)
@@ -8,76 +7,47 @@ const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
   console.log(`current activity is:${activity}`)
   switch (activity) {
     case 'fire-tv':
-      await matrixOn()
-      await matrixSwitch('c', 2)
-      await tvOn()
+      await neo('on', 1)
+      await neoSwitch(0, 1)
     break
     case 'virgin-tv':
-      await matrixOn()
-      await matrixSwitch('c', 1)
-      await tvOn()
+      await neo('on', 1)
+      await neoSwitch(2, 1)
       break
     case 'kodi':
-      await matrixOn()
-      await matrixSwitch('c', 3)
-      await tvOn()
+      await neo('on', 1)
+      await neoSwitch(3, 1)
       break
     case 'xbox':
-      await matrixOn()
-      await matrixSwitch('c', 4)
-      await tvOn()
+      await neo('on', 1)
+      await neoSwitch(1, 1)
       break
     case 'firetv-in-kitchen':
-      await matrixOn()
-      await matrixSwitch('d', 2)
-      await tvOff()
+      await neo('on', 0)
+      await neoSwitch(0, 0)
       break
     case 'virgin-in-kitchen':
-      await matrixOn()
-      await matrixSwitch('d', 1)
-      await tvOff()
+      await neo('on', 0)
+      await neoSwitch(2, 0)
       break
     case 'kodi-in-kitchen':
-      await matrixOn()
-      await matrixSwitch('d', 3)
-      await tvOff()
+      await neo('on', 0)
+      await neoSwitch(3, 0)
       break
     case 'xbox-in-kitchen':
-      await matrixOn()
-      await matrixSwitch('d', 4)
-      await tvOff()
+      await neo('on', 0)
+      await neoSwitch(1, 0)
       break
     case 'poweroff':
-      await tvOff()
-      await matrixOff()
+      await neo('off', 1)
+      await neo('off', 0)
       break
   }
 })
 .catch(error => console.error(error))
 
-
-
-// var device = 
-
-// TiVoDiscovery.on('founddevice', (device) => {
-//         console.log(`Found a device: ${device.name} (${device.ip})`);
-//     })
-//     // .on('lostdevice', (device) => {
-//     //     console.log(`Lost a device: ${device.name} (${device.ip})`);
-//     // })
-//     .discover();
-
-// const dev = new TiVoRemote({name: 'virgin', addresses: ['192.168.0.55']})
-// dev.sendIrcode('STANDBY')
-// dev.deinit()
-
-const tvOn = () => axios.post(`${HDANYWHERE}/api/command/irpass/11`, {"irdata":"0000,006C,0022,0002,015B,00AD,0016,0016,0016,0016,0016,0041,0016,0016,0016,0016,0016,0016,0016,0016,0016,0016,0016,0041,0016,0041,0016,0016,0016,0041,0016,0041,0016,0041,0016,0041,0016,0041,0016,0041,0016,0016,0016,0016,0016,0016,0016,0041,0016,0041,0016,0041,0016,0016,0016,0016,0016,0041,0016,0041,0016,0041,0016,0016,0016,0016,0016,0016,0016,0041,0016,05F7,015B,0057,0016,0E6C"})
-const tvOff = () => axios.post(`${HDANYWHERE}/api/command/irpass/11`, {"irdata":"0000,006C,0022,0002,015B,00AD,0016,0016,0016,0016,0016,0041,0016,0016,0016,0016,0016,0016,0016,0016,0016,0016,0016,0041,0016,0041,0016,0016,0016,0041,0016,0041,0016,0041,0016,0041,0016,0041,0016,0016,0016,0041,0016,0016,0016,0016,0016,0041,0016,0041,0016,0041,0016,0016,0016,0041,0016,0016,0016,0041,0016,0041,0016,0016,0016,0016,0016,0016,0016,0041,0016,05F7,015B,0057,0016,0E6C"})
-
-const matrixOn = () => axios.get(`${HDANYWHERE}/api/power/1`)
-const matrixOff = () => axios.get(`${HDANYWHERE}/api/power/0`)
-const matrixSwitch = (output, input) => axios.get(`${HDANYWHERE}/api/control/switch/${output}/${input}`)
-
+const neo = (action, output) => axios.get(`${NEO}/CEC/${action}/Output/${output}`)
+const neoSwitch = (input, output) => axios.get(`${NEO}/Port/set/${input}/${output}`)
 
 run()
 setInterval(run, 1000 * 30)
