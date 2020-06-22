@@ -1,5 +1,5 @@
 const axios = require('axios').default
-const {HARMONY, NEO} = process.env
+const {HARMONY, NEO, INTERVAL} = process.env
 
 const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
 .then(response => response.data.current_activity.slug)
@@ -50,4 +50,4 @@ const neo = (action, output) => axios.get(`${NEO}/CEC/${action}/Output/${output}
 const neoSwitch = (input, output) => axios.get(`${NEO}/Port/set/${input}/${output}`)
 
 run()
-setInterval(run, 1000 * 30)
+setInterval(run, 1000 * INTERVAL)
