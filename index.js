@@ -22,6 +22,10 @@ const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
       await neo('on', 1)
       await neoSwitch(1, 1)
       break
+    case 'fire-tv2':
+      await neo('on', 1)
+      await neoSwitch(4, 1)
+      break
     case 'firetv-in-kitchen':
       await neo('on', 0)
       await neoSwitch(0, 0)
