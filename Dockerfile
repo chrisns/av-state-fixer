@@ -1,4 +1,5 @@
 FROM node:alpine
+LABEL org.opencontainers.image.source https://github.com/chrisns/av-state-fixer
 
 WORKDIR /app
 COPY package.json package-lock.json ./
