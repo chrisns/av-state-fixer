@@ -1,5 +1,5 @@
 const axios = require('axios').default
-const { HARMONY, NEO, INTERVAL } = process.env
+const { HARMONY, NEO, SONOS, INTERVAL } = process.env
 
 
 
@@ -12,23 +12,28 @@ const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
       case 'fire-tv':
         await neo('on', 1)
         await neoSwitch(0, 1)
+        await sonos("Lounge/linein/Lounge/spdif")
         break
       case 'virgin-tv':
         await neo('on', 1)
         await neoSwitch(2, 1)
         await virginPower(true)
+        await sonos("Lounge/linein/Lounge/spdif")
         break
       case 'appletv':
         await neo('on', 1)
         await neoSwitch(3, 1)
+        await sonos("Lounge/linein/Lounge/spdif")
         break
       case 'xbox':
         await neo('on', 1)
         await neoSwitch(1, 1)
+        await sonos("Lounge/linein/Lounge/spdif")
         break
       case 'shield':
         await neo('on', 1)
         await neoSwitch(4, 1)
+        await sonos("Lounge/linein/Lounge/spdif")
         break
       case 'firetv-in-kitchen':
         await neo('on', 0)
@@ -58,6 +63,7 @@ const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
 
 const neo = (action, output) => axios.get(`${NEO}/CEC/${action}/Output/${output}`)
 const neoSwitch = (input, output) => axios.get(`${NEO}/Port/set/${input}/${output}`)
+const sonos = (selection) => axios.get(`${SONOS}/${selection}`)
 
 const virginPower = desiredState =>
   axios.get(`${NEO}/Port/List`)
