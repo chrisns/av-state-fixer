@@ -1,7 +1,8 @@
 const axios = require('axios').default
+const axiosRetry = require('axios-retry')
+axiosRetry(axios, { retries: 5 });
+
 const { HARMONY, NEO, SONOS, INTERVAL } = process.env
-
-
 
 
 const run = () => axios.get(`${HARMONY}/hubs/lounge/status`)
